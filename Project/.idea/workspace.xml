@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ced1af12-6225-4ecb-b3d5-1d394c9eeb4e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/CourseWork.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/jsLibraryMappings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../DataBase/DBStructure.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../DataBase/dump.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Dump.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Email.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../EndWork.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../PROJECTUMLALL.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Project.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/.gitattributes" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/mvnw" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/mvnw.cmd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/StoServiceApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/config/ApplicationConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/config/SecurityConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/controller/AdminController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/controller/AppointmentController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/controller/AuthController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/controller/CarController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/controller/ClientSparePartsController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/controller/HomeController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/controller/ProfileChangeController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/controller/RedirectController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/controller/RegistrationController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/controller/ReviewController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/controller/SparePartController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/controller/StoController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/controller/UserProfileController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/controller/WorkerController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/dto/AppointmentDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/dto/ReviewDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/dto/WorkerReviewDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/model/Appointment.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/model/Car.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/model/Client.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/model/ClientReview.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/model/Inventory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/model/InventoryId.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/model/Services.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/model/SparePart.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/model/Sto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/model/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/model/Worker.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/model/WorkerReview.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/repository/AppointmentRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/repository/CarRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/repository/ClientRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/repository/ClientReviewRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/repository/InventoryRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/repository/ServicesRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/repository/SparePartRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/repository/StoRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/repository/UserRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/repository/WorkerRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/repository/WorkerReviewRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/service/AppointmentService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/service/DataService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/service/UserDetailsServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/util/AESUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/java/com/sto/util/ENVUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/resources/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/resources/templates/admin.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/resources/templates/clientPages/add-appointment.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/resources/templates/clientPages/add-car.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/resources/templates/clientPages/edit-profile-client.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/resources/templates/clientPages/home-client.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/resources/templates/clientPages/spare-parts-details.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/resources/templates/clientPages/spare-parts.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/resources/templates/clientPages/sto.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/resources/templates/login.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/resources/templates/profile.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/resources/templates/register.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/resources/templates/workerPages/edit-profile-worker.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/main/resources/templates/workerPages/home-worker.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StoService/src/test/java/com/sto/StoServiceApplicationTests.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ProjectFINALAUML.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Projectuuu.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../backup.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Заметки.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../КурсоваяНепокрытых.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Отчет_форма_ИТОГ.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Подготовка/Course_Uml.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Подготовка/UmlDeiagramCode.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Подготовка/Подготовка к разработке проекта.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Подготовка/Подготовка к разработке проекта.zip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="2wuRNaDgUSmQqJ4ymgAjS4KzkNV" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/igorn/Desktop/Programs/3Course/CourseWork/Project",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.25659.59" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.25659.59" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ced1af12-6225-4ecb-b3d5-1d394c9eeb4e" name="Changes" comment="" />
+      <created>1746889432695</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1746889432695</updated>
+      <workItem from="1746889433978" duration="154000" />
+      <workItem from="1758250826289" duration="1068000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

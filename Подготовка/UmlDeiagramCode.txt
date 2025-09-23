@@ -1,0 +1,208 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+hide empty members
+
+' 1. Пакет пользователей (без изменений)
+package "Пользователи" {
+    abstract class User {
+        + id: Integer
+        + name: String
+        + email: String
+        + passwordHash: String
+        + phone: String
+        + role: Enum {client, worker}
+        --
+        + authenticate(): Boolean
+        + updateProfile(): void
+    }
+
+    class Client {
+        + carBrand: String
+        + carModel: String
+        + carYear: Integer
+        --
+        + searchSTO(): List<STO>
+        + bookService(): Appointment
+    }
+
+    class Worker {
+        + specialization: String
+        + experienceYears: Integer
+        + verificationCode: String
+        --
+        + confirmAppointment(): void
+        + addRepairReport(): void
+    }
+
+    User <|-- Client
+    User <|-- Worker
+
+    ' Контроллеры пользователей
+    class UserController {
+        + login(): ResponseEntity<String>
+        + registerClient(): ResponseEntity<Client>
+        + registerWorker(): ResponseEntity<Worker>
+    }
+
+    class ProfileController {
+        + updateProfile(): ResponseEntity<User>
+        + getProfile(): ResponseEntity<User>
+    }
+}
+
+' 2. Пакет автомобилей (без изменений)
+package "Автомобили" {
+    class Car {
+        + vin: String
+        + brand: String
+        + model: String
+        + year: Integer
+        + mileage: Integer
+        --
+        + getDiagnostics(): String
+    }
+
+    Client "1" --> "1..*" Car
+
+    ' Контроллер автомобилей
+    class CarController {
+        + addCar(): ResponseEntity<Car>
+        + getClientCars(): ResponseEntity<List<Car>>
+    }
+}
+
+' 3. Пакет СТО (без изменений)
+package "СТО" {
+    class STO {
+        + id: Integer
+        + name: String
+        + address: String
+        + rating: Float
+        + workingHours: String
+        --
+        + updateRating(): void
+    }
+
+    class Service {
+        + id: Integer
+        + name: String {ТО, Диагностика, Ремонт}
+        + description: String
+        + repairHours: Float
+        --
+        + calculateComplexity(): Integer
+    }
+
+    STO "1" *-- "0..*" Service
+    STO "1" *-- "1..*" Worker
+
+    ' Контроллеры СТО
+    class STOController {
+        + searchSTO(): ResponseEntity<List<STO>>
+        + getSTODetails(): ResponseEntity<STO>
+        + updateRating(): ResponseEntity<Void>
+    }
+
+    class ServiceController {
+        + getServices(): ResponseEntity<List<Service>>
+        + calculateComplexity(): ResponseEntity<Integer>
+    }
+}
+
+' 4. Пакет запчастей (без изменений)
+package "Запчасти" {
+    class SparePart {
+        + id: Integer
+        + name: String
+        + inventory: Inventory
+        + category: String
+        + compatibleCars: String[]
+        --
+        + checkCompatibility(): Boolean
+    }
+
+    class Inventory {
+        + quantity: Integer
+        + stoName: STO
+        --
+        + checkAvailability(): Boolean
+    }
+
+    STO "1" *-- "0..*" Inventory 
+    SparePart "1..*" *-- "1" Inventory
+
+    ' Контроллер запчастей
+    class SparePartController {
+        + searchSpareParts(): ResponseEntity<List<SparePart>>
+        + checkCompatibility(): ResponseEntity<Boolean>
+    }
+
+    class InventoryController {
+        + checkAvailability(): ResponseEntity<Boolean>
+        + updateInventory(): ResponseEntity<Void>
+    }
+}
+
+' 5. Пакет записей (без изменений)
+package "Записи" {
+    class Appointment {
+        + id: Integer
+        + dateTime: DateTime
+        + status: Enum {pending, confirmed, completed, cancelled}
+        --
+        + cancel(): void
+        + reschedule(): void
+    }
+
+    class ReviewClient {
+        + id: Integer
+        + rating: Integer {1-5}
+        + comment: String
+        --
+        + publish(): void
+    }
+
+    class ReviewWorker {
+        + id: Integer
+        + hoursForComplite: String
+        + serviceName: Enum { ТО, Диагностика, Ремонт}
+        + comment: String
+        + autoModel: String
+        --
+        + generateReport():String
+    }
+
+    Client "1" --> "0..*" Appointment
+    Service "1" --> "0..*" Appointment
+    STO "1" --> "0..*" Appointment
+
+    Client "1" --> "0..*" ReviewClient
+    Worker "1" --> "0..*" ReviewWorker
+
+    ' Контроллеры записей и отзывов
+    class AppointmentController {
+        + bookAppointment(): ResponseEntity<Appointment>
+        + cancelAppointment(): ResponseEntity<Void>
+        + rescheduleAppointment(): ResponseEntity<Void>
+    }
+
+    class ReviewController {
+        + addClientReview(): ResponseEntity<ReviewClient>
+        + addWorkerReview(): ResponseEntity<ReviewWorker>
+        + getReviews(): ResponseEntity<List<ReviewClient>>
+    }
+}
+
+' Связи контроллеров с сущностями (пунктирные линии)
+UserController ..> User
+ProfileController ..> User
+CarController ..> Car
+STOController ..> STO
+ServiceController ..> Service
+SparePartController ..> SparePart
+InventoryController ..> Inventory
+AppointmentController ..> Appointment
+ReviewController ..> ReviewClient
+ReviewController ..> ReviewWorker
+
+@enduml

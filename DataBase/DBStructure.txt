@@ -1,0 +1,395 @@
+DB 'STO':
+
+Table:
+-- Table: public.appointments
+
+-- DROP TABLE IF EXISTS public.appointments;
+
+CREATE TABLE IF NOT EXISTS public.appointments
+(
+    id integer NOT NULL DEFAULT nextval('appointments_id_seq'::regclass),
+    client_id integer NOT NULL,
+    service_id integer NOT NULL,
+    sto_id integer NOT NULL,
+    date_time timestamp without time zone NOT NULL,
+    status status_appointment DEFAULT 'pending'::status_appointment,
+    CONSTRAINT appointments_pkey PRIMARY KEY (id),
+    CONSTRAINT appointments_client_id_fkey FOREIGN KEY (client_id)
+        REFERENCES public.client (user_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT appointments_service_id_fkey FOREIGN KEY (service_id)
+        REFERENCES public.services (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT appointments_sto_id_fkey FOREIGN KEY (sto_id)
+        REFERENCES public.sto (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.appointments
+    OWNER to postgres;
+
+
+----------------------------------------
+
+-- Table: public.cars
+
+-- DROP TABLE IF EXISTS public.cars;
+
+CREATE TABLE IF NOT EXISTS public.cars
+(
+    vin character varying(17) COLLATE pg_catalog."default" NOT NULL,
+    brand character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    model character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    year integer,
+    mileage integer,
+    client_id integer NOT NULL,
+    CONSTRAINT cars_pkey PRIMARY KEY (vin),
+    CONSTRAINT cars_client_id_fkey FOREIGN KEY (client_id)
+        REFERENCES public.client (user_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE CASCADE
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.cars
+    OWNER to postgres;
+
+
+----------------------------------------
+
+-- Table: public.client
+
+-- DROP TABLE IF EXISTS public.client;
+
+CREATE TABLE IF NOT EXISTS public.client
+(
+    user_id integer NOT NULL DEFAULT nextval('client_user_id_seq'::regclass),
+    car_brand character varying(20) COLLATE pg_catalog."default",
+    car_model character varying(40) COLLATE pg_catalog."default",
+    car_year integer,
+    CONSTRAINT client_pkey PRIMARY KEY (user_id),
+    CONSTRAINT client_user_id_fkey FOREIGN KEY (user_id)
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE CASCADE
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.client
+    OWNER to postgres;
+
+-----------------------------------------
+
+
+-- Table: public.client_reviews
+
+-- DROP TABLE IF EXISTS public.client_reviews;
+
+CREATE TABLE IF NOT EXISTS public.client_reviews
+(
+    id integer NOT NULL DEFAULT nextval('client_reviews_id_seq'::regclass),
+    client_id integer NOT NULL,
+    sto_id integer NOT NULL,
+    rating integer,
+    comment text COLLATE pg_catalog."default",
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT client_reviews_pkey PRIMARY KEY (id),
+    CONSTRAINT client_reviews_client_id_fkey FOREIGN KEY (client_id)
+        REFERENCES public.client (user_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT client_reviews_sto_id_fkey FOREIGN KEY (sto_id)
+        REFERENCES public.sto (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT client_reviews_rating_check CHECK (rating >= 1 AND rating <= 5)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.client_reviews
+    OWNER to postgres;
+
+
+----------------------------------------
+
+
+-- Table: public.inventory
+
+-- DROP TABLE IF EXISTS public.inventory;
+
+CREATE TABLE IF NOT EXISTS public.inventory
+(
+    sto_id integer NOT NULL,
+    part_id integer NOT NULL,
+    quantity integer NOT NULL DEFAULT 0,
+    CONSTRAINT inventory_pkey PRIMARY KEY (sto_id, part_id),
+    CONSTRAINT inventory_part_id_fkey FOREIGN KEY (part_id)
+        REFERENCES public.spare_part (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE CASCADE,
+    CONSTRAINT inventory_sto_id_fkey FOREIGN KEY (sto_id)
+        REFERENCES public.sto (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE CASCADE,
+    CONSTRAINT inventory_quantity_check CHECK (quantity >= 0)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.inventory
+    OWNER to postgres;
+
+
+
+-----------------------------------------
+
+
+-- Table: public.services
+
+-- DROP TABLE IF EXISTS public.services;
+
+CREATE TABLE IF NOT EXISTS public.services
+(
+    id integer NOT NULL DEFAULT nextval('services_id_seq'::regclass),
+    name character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    description text COLLATE pg_catalog."default",
+    repair_hours double precision NOT NULL,
+    sto_id integer NOT NULL,
+    CONSTRAINT services_pkey PRIMARY KEY (id),
+    CONSTRAINT services_sto_id_fkey FOREIGN KEY (sto_id)
+        REFERENCES public.sto (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE CASCADE
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.services
+    OWNER to postgres;
+
+
+------------------------------------------
+
+
+-- Table: public.spare_part
+
+-- DROP TABLE IF EXISTS public.spare_part;
+
+CREATE TABLE IF NOT EXISTS public.spare_part
+(
+    id integer NOT NULL DEFAULT nextval('spare_part_id_seq'::regclass),
+    name character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    category character varying(100) COLLATE pg_catalog."default",
+    CONSTRAINT spare_part_pkey PRIMARY KEY (id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.spare_part
+    OWNER to postgres;
+
+
+
+
+-----------------------------------------
+
+
+
+-- Table: public.sto
+
+-- DROP TABLE IF EXISTS public.sto;
+
+CREATE TABLE IF NOT EXISTS public.sto
+(
+    id integer NOT NULL DEFAULT nextval('sto_id_seq'::regclass),
+    name character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    address text COLLATE pg_catalog."default" NOT NULL,
+    rating double precision DEFAULT 0.0,
+    working_hours text COLLATE pg_catalog."default",
+    verification_code character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT sto_pkey PRIMARY KEY (id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.sto
+    OWNER to postgres;
+
+
+-----------------------------------------
+
+
+-- Table: public.users
+
+-- DROP TABLE IF EXISTS public.users;
+
+CREATE TABLE IF NOT EXISTS public.users
+(
+    id integer NOT NULL DEFAULT nextval('users_id_seq'::regclass),
+    name character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    email character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    password_hash character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    phone character varying(15) COLLATE pg_catalog."default",
+    role roler,
+    CONSTRAINT users_pkey PRIMARY KEY (id),
+    CONSTRAINT users_email_key UNIQUE (email)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.users
+    OWNER to postgres;
+
+
+
+
+----------------------------------------
+
+
+-- Table: public.worker
+
+-- DROP TABLE IF EXISTS public.worker;
+
+CREATE TABLE IF NOT EXISTS public.worker
+(
+    user_id integer NOT NULL DEFAULT nextval('worker_user_id_seq'::regclass),
+    specialization character varying(100) COLLATE pg_catalog."default",
+    experience_years integer,
+    verification_code character varying(50) COLLATE pg_catalog."default",
+    sto_id integer,
+    CONSTRAINT worker_pkey PRIMARY KEY (user_id),
+    CONSTRAINT worker_sto_id_fkey FOREIGN KEY (sto_id)
+        REFERENCES public.sto (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE SET NULL,
+    CONSTRAINT worker_user_id_fkey FOREIGN KEY (user_id)
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE CASCADE
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.worker
+    OWNER to postgres;
+
+-- Trigger: trigger_assign_worker
+
+-- DROP TRIGGER IF EXISTS trigger_assign_worker ON public.worker;
+
+CREATE OR REPLACE TRIGGER trigger_assign_worker
+    AFTER INSERT
+    ON public.worker
+    FOR EACH ROW
+    EXECUTE FUNCTION public.assign_worker_to_sto();
+
+
+
+---------------------------------------------------
+
+-- Table: public.worker_reviews
+
+-- DROP TABLE IF EXISTS public.worker_reviews;
+
+CREATE TABLE IF NOT EXISTS public.worker_reviews
+(
+    id integer NOT NULL DEFAULT nextval('worker_reviews_id_seq'::regclass),
+    worker_id integer NOT NULL,
+    hours_for_complete character varying(50) COLLATE pg_catalog."default",
+    service_name service_name_enum,
+    comment text COLLATE pg_catalog."default",
+    auto_model character varying(50) COLLATE pg_catalog."default",
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT worker_reviews_pkey PRIMARY KEY (id),
+    CONSTRAINT worker_reviews_worker_id_fkey FOREIGN KEY (worker_id)
+        REFERENCES public.worker (user_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.worker_reviews
+    OWNER to postgres;
+
+
+
+----------------------------------------------------------------------------------------------------------------------------
+
+
+FUNCTION:
+
+-- FUNCTION: public.assign_worker_to_sto()
+
+-- DROP FUNCTION IF EXISTS public.assign_worker_to_sto();
+
+CREATE OR REPLACE FUNCTION public.assign_worker_to_sto()
+    RETURNS trigger
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE NOT LEAKPROOF
+AS $BODY$
+BEGIN
+    UPDATE worker
+    SET sto_id = sto.id
+    FROM sto
+    WHERE NEW.verification_code = sto.verification_code;
+    
+    RETURN NEW;
+END;
+$BODY$;
+
+ALTER FUNCTION public.assign_worker_to_sto()
+    OWNER TO postgres;
+
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+СВОИ типы данных 
+
+
+
+
+-- Type: roler
+
+-- DROP TYPE IF EXISTS public.roler;
+
+CREATE TYPE public.roler AS ENUM
+    ('client', 'worker');
+
+ALTER TYPE public.roler
+    OWNER TO postgres;
+
+
+
+-------------------------------------
+
+-- Type: service_name_enum
+
+-- DROP TYPE IF EXISTS public.service_name_enum;
+
+CREATE TYPE public.service_name_enum AS ENUM
+    ('ТО', 'Диагностика', 'Ремонт');
+
+ALTER TYPE public.service_name_enum
+    OWNER TO postgres;
+
+---------------------------------
+
+-- Type: status_appointment
+
+-- DROP TYPE IF EXISTS public.status_appointment;
+
+CREATE TYPE public.status_appointment AS ENUM
+    ('pending', 'confirmed', 'completed', 'cancelled');
+
+ALTER TYPE public.status_appointment
+    OWNER TO postgres;

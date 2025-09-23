@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Регистрация</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .worker-fields {
+      display: none;
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #f8f9fa;
+      border-radius: 5px;
+    }
+    .registration-container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 30px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+    .registration-title {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #0d6efd;
+    }
+    .form-label {
+      font-weight: 500;
+    }
+    .registration-btn {
+      width: 100%;
+      padding: 10px;
+      font-weight: 500;
+    }
+    .login-link {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="registration-container">
+    <h2 class="registration-title">Регистрация</h2>
+    <form action="#" th:action="@{/register}" th:object="${user}" method="post">
+      <div class="mb-3">
+        <label for="email" class="form-label">Электронная почта</label>
+        <input type="email" class="form-control" id="email" th:field="*{email}" required>
+        <div class="invalid-feedback">Пожалуйста, введите корректный email</div>
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Пароль</label>
+        <input type="password" class="form-control" id="password" th:field="*{rawPassword}" required>
+        <div class="invalid-feedback">Пожалуйста, введите пароль</div>
+      </div>
+
+      <div class="mb-3">
+        <label for="name" class="form-label">Имя и фамилия</label>
+        <input type="text" class="form-control" id="name" th:field="*{name}" required>
+        <div class="invalid-feedback">Пожалуйста, введите ваше имя</div>
+      </div>
+
+      <div class="mb-3">
+        <label for="phone" class="form-label">Номер телефона</label>
+        <input type="tel" class="form-control" id="phone" th:field="*{phone}" required>
+        <div class="invalid-feedback">Пожалуйста, введите номер телефона</div>
+      </div>
+
+      <div class="mb-3">
+        <label for="role" class="form-label">Выберите роль</label>
+        <select class="form-select" id="role" th:field="*{role}" required
+                onchange="toggleWorkerFields(this.value)">
+          <option value="" disabled selected>Выберите роль</option>
+          <option value="CLIENT">Пользователь</option>
+          <option value="WORKER">Работник</option>
+        </select>
+      </div>
+
+      <div id="workerFields" class="worker-fields">
+        <h5>Информация о работнике</h5>
+        <div class="mb-3">
+          <label for="specialization" class="form-label">Специализация</label>
+          <input type="text" class="form-control" id="specialization"
+                 name="specialization" required>
+        </div>
+        <div class="mb-3">
+          <label for="experience" class="form-label">Опыт работы (лет)</label>
+          <input type="number" class="form-control" id="experience"
+                 name="experienceYears" min="0" required>
+        </div>
+        <div class="mb-3">
+          <label for="verificationCode" class="form-label">Код подтверждения</label>
+          <input type="text" class="form-control" id="verificationCode"
+                 name="verificationCode" required>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary registration-btn">Зарегистрироваться</button>
+      <div class="login-link">
+        <a href="/login">Войти</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  function toggleWorkerFields(role) {
+    const workerFields = document.getElementById('workerFields');
+    if (role === 'WORKER') {
+      workerFields.style.display = 'block';
+      workerFields.querySelectorAll('input').forEach(input => {
+        input.required = true;
+      });
+    } else {
+      workerFields.style.display = 'none';
+      workerFields.querySelectorAll('input').forEach(input => {
+        input.required = false;
+      });
+    }
+  }
+  (function() {
+    'use strict';
+
+    const form = document.querySelector('form');
+
+    form.addEventListener('submit', function(event) {
+      if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      form.classList.add('was-validated');
+    }, false);
+  })();
+</script>
+</body>
+</html>

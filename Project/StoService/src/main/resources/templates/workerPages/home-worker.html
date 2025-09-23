@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Рабочий портал</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2A3950;
+            --accent: #7C8DA6;
+            --background: #F5F7FA;
+        }
+
+        .custom-card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .custom-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .order-header {
+            background-color: var(--background);
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .order-header:hover {
+            background-color: #e9ecef;
+        }
+
+        .order-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .status-badge {
+            padding: 0.35em 0.65em;
+            border-radius: 20px;
+            font-size: 0.85em;
+        }
+
+        .avatar-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 500;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body class="bg-light">
+<header class="bg-primary text-white py-3 shadow">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 class="h4 mb-0">Рабочий портал</h1>
+            <div class="d-flex align-items-center gap-3">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="avatar-circle">
+                        <span th:text="${user.name.substring(0,1)}"></span>
+                    </div>
+                    <span th:text="${user.name}"></span>
+                </div>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="btn btn-outline-light btn-sm">Выйти</button>
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="container py-4">
+    <div class="row g-4 mb-4">
+        <div class="col-md-6">
+            <div class="custom-card bg-white p-4">
+                <h5 class="text-muted mb-3">Ваш профиль</h5>
+                <div class="d-flex gap-3 align-items-center">
+                    <div class="avatar-circle">
+                        <span th:text="${user.name.substring(0,1)}"></span>
+                    </div>
+                    <div>
+                        <div class="fw-medium" th:text="${user.name}"></div>
+                        <small class="text-muted">Дата:
+                            <span th:text="${#temporals.format(#temporals.createToday(), 'dd.MM.yyyy')}"></span>
+                        </small>
+                    </div>
+                </div>
+                <a href="/user-profile" class="btn btn-primary">Профиль</a>
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+            <div class="custom-card bg-white p-4">
+                <h5 class="text-muted mb-3">Статистика</h5>
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div class="stat-number text-primary"
+                             th:text="${#lists.size(newAppointments)}"></div>
+                        <div class="text-muted small">Поступившие заказы</div>
+                    </div>
+                    <div class="col-6">
+                        <div class="stat-number text-warning"
+                             th:text="${#lists.size(myAppointments)}"></div>
+                        <div class="text-muted small">Мои заявки</div>
+                    </div>
+                    <div class="col-6">
+                        <div class="stat-number text-success"
+                             th:text="${#lists.size(myCompletedAppointments)}"></div>
+                        <div class="text-muted small">Мои выполненные заявки</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <div class="mb-3">
+            <div class="order-header" onclick="toggleDetails(this)">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="fw-medium">Отметить поступление или создание новой детали</div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="order-details">
+                <form th:action="@{/sparePartAdd}" method="POST">
+
+                    <div class="form-group">
+                        <label>Название детали</label>
+                        <input type="text" name="name" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Категория детали</label>
+                        <textarea name="category" class="form-control"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Количество</label>
+                        <input type="text" name="quantity" class="form-control">
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Сохранить</button>
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Секция заказов -->
+    <div class="custom-card bg-white p-4">
+        <div class="mt-4">
+            <h5 class="text-muted mb-3">Управление услугами СТО</h5>
+            <button class="btn btn-primary mb-3" onclick="to    ggleServiceForm()">Добавить услугу</button>
+
+            <div id="serviceForm" class="collapse custom-card bg-white p-4">
+                <form th:action="@{/add-service}" method="POST">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Название услуги:</label>
+                                <input type="text" name="name" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Время ремонта (часы):</label>
+                                <input type="number" step="0.1" name="repairHours" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Описание:</label>
+                                <textarea name="description" class="form-control" rows="3"></textarea>
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="stoId" th:value="${sto.id}">
+                        <button type="submit" class="btn btn-success">Сохранить</button>
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="container mt-3">
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                <span th:text="${error}"></span>
+            </div>
+
+            <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i>
+                <span th:text="${success}"></span>
+            </div>
+        </div>
+        <div class="mb-4">
+            <h5 class="text-muted mb-3">Новые заказы</h5>
+            <div th:each="app : ${newAppointments}" class="mb-3">
+                <div class="order-header" onclick="toggleDetails(this)">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="fw-medium">Заказ #<span th:text="${app.id}"></span></div>
+                            <small class="text-muted">
+                                <span th:text="${#temporals.format(app.dateTime, 'dd.MM.yyyy HH:mm')}"></span>
+                            </small>
+                        </div>
+                        <span class="status-badge bg-primary text-white">Новый</span>
+                    </div>
+                </div>
+                <div class="order-details">
+                    <div class="pt-3">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Клиент:</label>
+                                    <div class="form-control-plaintext"
+                                         th:text="${app.client.user.name}"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Автомобиль:</label>
+                                    <div class="form-control-plaintext"
+                                         th:text="${app.client.carBrand} +' ' +${app.client.carModel}"></div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Услуга:</label>
+                                    <div class="form-control-plaintext"
+                                         th:text="${app.service?.name ?: 'Не указана'}"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2 mt-3">
+                            <form th:action="@{'/worker/appointments/' + ${app.id} + '/accept'}" method="post">
+                                <button type="submit" class="btn btn-success btn-sm">
+                                    Принять
+                                </button>
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                            </form>
+                            <form th:action="@{'/worker/appointments/' + ${app.id} + '/reject'}" method="post">
+                                <button type="submit" class="btn btn-outline-danger btn-sm">
+                                    Удалить
+                                </button>
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <h5 class="text-muted mb-3">Текущие заказы</h5>
+            <div th:each="app : ${myAppointments}" class="mb-3">
+                <div class="order-header" onclick="toggleDetails(this)">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="fw-medium">Заказ #<span th:text="${app.id}"></span></div>
+                            <small class="text-muted">
+                                <span th:text="${#temporals.format(app.dateTime, 'dd.MM.yyyy HH:mm')}"></span>
+                            </small>
+                        </div>
+                        <span th:classappend="${app.status == 'ACCEPTED'} ? 'bg-warning'
+                      : (${app.status == 'COMPLETED'} ? 'bg-success' : 'bg-danger')"
+                              class="status-badge text-white">
+                                <span th:text="${app.status}"></span>
+                            </span>
+                    </div>
+                </div>
+                <div class="order-details">
+                    <div class="pt-3">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Статус</label>
+                                    <div class="form-control-plaintext" th:text="${app.status}"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Клиент</label>
+                                    <div class="form-control-plaintext"
+                                         th:text="${app.client.user.name}"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Услуга</label>
+                                    <div class="form-control-plaintext"
+                                         th:text="${app.service?.name ?: 'Не указана'}"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Автомобиль</label>
+                                    <div class="form-control-plaintext"
+                                         th:text="${app.client.carBrand + ' ' +app.client.carModel}"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <form th:action="@{/complete-appointment}" method="POST">
+                        <input type="hidden" name="appointmentId" th:value="${app.id}">
+                        <input type="hidden" name="serviceName" th:value="${app.service.name}">
+
+                        <div class="form-group">
+                            <label>Затраченное время (часы):</label>
+                            <input type="text" name="hours" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Комментарий:</label>
+                            <textarea name="comment" class="form-control"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Модель авто:</label>
+                            <input type="text" name="autoModel" class="form-control">
+                        </div>
+
+                        <button type="submit" class="btn btn-success">Сохранить</button>
+
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    </form>
+                    <form th:action="@{/cancel-my-appointment}" method="POST">
+                        <input type="hidden" name="appointmentId" th:value="${app.id}">
+                        <input type="hidden" name="serviceName" th:value="${app.service.name}">
+                        <button type="submit" class="btn btn-outline-danger btn-sm">Отказаться</button>
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="mt-4">
+            <h5 class="text-muted mb-3">Выполненные заказы</h5>
+            <div th:each="app : ${myCompletedAppointments}" class="mb-3">
+                <div class="order-header" onclick="toggleDetails(this)">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="fw-medium">Заказ #<span th:text="${app.id}"></span></div>
+                            <small class="text-muted">
+                                <span th:text="${#temporals.format(app.dateTime, 'dd.MM.yyyy HH:mm')}"></span>
+                            </small>
+                        </div>
+                        <span th:classappend="${app.status == 'ACCEPTED'} ? 'bg-warning'
+                      : (${app.status == 'COMPLETED'} ? 'bg-success' : 'bg-danger')"
+                              class="status-badge text-white">
+                                <span th:text="${app.status}"></span>
+                            </span>
+                    </div>
+                </div>
+                <div class="order-details">
+                    <div class="pt-3">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Статус</label>
+                                    <div class="form-control-plaintext" th:text="${app.status}"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Клиент</label>
+                                    <div class="form-control-plaintext"
+                                         th:text="${app.client.user.name}"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Услуга</label>
+                                    <div class="form-control-plaintext"
+                                         th:text="${app.service?.name ?: 'Не указана'}"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Автомобиль</label>
+                                    <div class="form-control-plaintext"
+                                         th:text="${app.client.carBrand + ' ' +app.client.carModel}"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+
+    function toggleDetails(header) {
+        const details = header.nextElementSibling;
+        const isOpen = details.style.maxHeight;
+
+        if (!isOpen) {
+            document.querySelectorAll('[id^="form-"]').forEach(form => {
+                form.classList.add('collapse');
+            });
+        }
+
+        details.style.maxHeight = isOpen ? null : details.scrollHeight + "px";
+    }
+
+    function toggleServiceForm() {
+        const form = document.getElementById('serviceForm');
+        form.classList.toggle('collapse');
+    }
+</script>
+</body>
+</html>

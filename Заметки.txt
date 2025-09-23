@@ -1,0 +1,43 @@
+-- Сначала добавляем пользователя
+--INSERT INTO users (name, email, password_hash, role)
+--VALUES ('Иван Механиков', 'mechanic@example.com', 'hashed_password', 'worker')
+--RETURNING id;  -- Возвращает созданный ID, например 1
+
+select * from users;
+
+-- Затем добавляем СТО
+--INSERT INTO sto (name, address, verification_code)
+--VALUES ('СТО АвтоМир', 'ул. Ленина 1', 'AUTOMIR123');
+
+select * from sto;
+
+-- Теперь добавляем работника с существующим user_id
+INSERT INTO worker (user_id, verification_code, specialization)
+VALUES (3, 'AUTOMIR123', 'Механик');  -- Используем ID, который вернулся при создании пользователя
+
+
+
+-- Добавление столбца в существующую таблицу
+--ALTER TABLE worker
+--ADD COLUMN sto_id INTEGER REFERENCES sto(id) ON DELETE SET NULL;
+
+Функции BD:
+
+CREATE OR REPLACE FUNCTION assign_worker_to_sto()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE worker
+    SET sto_id = sto.id
+    FROM sto
+    WHERE NEW.verification_code = sto.verification_code;
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- 5. Создаем триггер
+CREATE TRIGGER trigger_assign_worker
+AFTER INSERT ON worker
+FOR EACH ROW
+EXECUTE FUNCTION assign_worker_to_sto();
+

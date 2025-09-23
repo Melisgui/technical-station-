@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${part.name} + ' - Детали'"></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h1 th:text="${part.name}"></h1>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <a href="/spare-parts" class="btn btn-secondary">Назад к списку</a>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <h4>Основная информация:</h4>
+                <p><strong>Категория:</strong> <span th:text="${part.category}"></span></p>
+            </div>
+
+            <div class="mb-4">
+                <h4>Наличие на СТО:</h4>
+                <div th:if="${not #lists.isEmpty(inventories)}">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>СТО</th>
+                            <th>Улица</th>
+                            <th>Количество</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="inv : ${inventories}">
+                            <td th:text="${inv.sto.name}"></td>
+                            <td th:text="${inv.sto.address}"></td>
+                            <td th:text="${inv.quantity}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
